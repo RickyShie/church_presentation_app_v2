@@ -1,11 +1,10 @@
 # fly.toml app configuration file
-app = 'church-presentation-v1'
+app = 'church-presentation-app-v2'
 primary_region = 'nrt'
 
 [build]
 
 [env]
-  # Set production environment
   FLASK_ENV = "production"
   PYTHONUNBUFFERED = "1"
 
@@ -16,8 +15,7 @@ primary_region = 'nrt'
   auto_start_machines = true
   min_machines_running = 0
   processes = ['app']
-
-  # Enable WebSocket support for SocketIO
+  
   [http_service.concurrency]
     type = "connections"
     hard_limit = 1000
@@ -28,12 +26,16 @@ primary_region = 'nrt'
   cpu_kind = 'shared'
   cpus = 1
 
-# Health check for SocketIO apps
+# Simple HTTP health check
 [[services.http_checks]]
-  interval = "10s"
-  grace_period = "5s"
+  interval = "15s"
+  grace_period = "10s"
   method = "GET"
-  path = "/"
+  path = "/health"
   protocol = "http"
-  restart_limit = 0
-  timeout = "2s"
+  timeout = "5s"
+  
+[[services.tcp_checks]]
+  interval = "15s"
+  grace_period = "10s"
+  timeout = "5s"

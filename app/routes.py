@@ -1,12 +1,16 @@
-from flask import render_template, flash, request
+from flask import render_template, flash, request, jsonify
 from app import app, socketio
 from app.forms import BibleSearchForm, SermonMetadataForm, AnnouncementForm
 from app.models import Bible
 
-@app.route("/")
-@app.route("/index")
+@app.route('/health')
+def health_check():
+    return jsonify({"status": "healthy", "message": "App is running"}), 200
+
+@app.route('/')
 def index():
-    return render_template("base.html")
+    # Your existing index route or add this basic one
+    return jsonify({"status": "ok", "message": "Church Presentation App"}), 200
 
 
 @app.route("/bible_search", methods=["GET", "POST"])
