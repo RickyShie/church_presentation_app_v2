@@ -1,0 +1,282 @@
+:root {
+      --bg: #f8f9fa;
+      --card: #ffffff;
+      --text: #212529;
+      --muted: #6c757d;
+      --primary: #0d6efd;
+      --radius: 16px;
+      --shadow: 0 6px 20px rgba(0,0,0,.08);
+    }
+    /* Bootstrap-ish primitives */
+    html, body {
+      height: 100%;
+      margin: 0;
+      color: var(--text);
+      background: var(--bg);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      line-height: 1.4;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    .row {
+      display: grid;
+      grid-gap: 20px;
+    }
+    .row.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .row.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    @media (max-width: 900px) {
+      .row.cols-3 { grid-template-columns: 1fr; }
+      .row.cols-2 { grid-template-columns: 1fr; }
+    }
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px;
+    }
+    .card.muted { background: #f1f3f5; }
+    .title {
+      text-align: center;
+      font-weight: 700;
+      letter-spacing: .3px;
+      margin: 4px 0 14px;
+    }
+    .subtitle {
+      color: var(--muted);
+      text-align: center;
+      margin: 0;
+    }
+    .pill {
+      display:inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #e9ecef;
+      color: #343a40;
+      font-size: .9rem;
+    }
+    /* Layout switcher */
+    .layout { display: none; }
+    .layout.active { display: block; }
+    /* Visual placeholders (gray blocks) the user can replace later */
+    .placeholder {
+      min-height: 240px;
+      background: #e9ecef;
+      border-radius: 12px;
+    }
+    .placeholder.tall { min-height: 460px; }
+    .placeholder.mid { min-height: 320px; }
+    .placeholder.short { min-height: 120px; }
+    .section-heading {
+      font-weight: 600;
+      margin: 4px 0 12px;
+      text-align: center;
+    }
+    .grid-5 {
+      display: grid;
+      grid-gap: 18px;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+    @media (max-width: 900px) { .grid-5 { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 600px) { .grid-5 { grid-template-columns: repeat(2, 1fr); } }
+    header.appbar {
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(6px);
+      background: rgba(255,255,255,.75);
+      box-shadow: 0 2px 10px rgba(0,0,0,.05);
+      z-index: 10;
+    }
+    header .brand {
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: .3px;
+    }
+    .help {
+      color: var(--muted);
+      font-size: 0.9rem;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+.verse {
+  margin: 5px 0;
+  line-height: 1.6;
+  position: relative;
+}
+
+.verse-number {
+  font-size: 0.7em;
+  vertical-align: super;  /* makes it a superscript */
+  margin-right: 4px;      /* small gap between number and text */
+  color: gray;            /* optional, to look like a subtle marker */
+}
+
+#kougo-search-results,
+#cunp-search-results,
+#niv-search-results {
+  max-height: 600px;   /* you can adjust height based on your design */
+  overflow-y: auto;    /* enables vertical scrollbar if content exceeds height */
+  padding-right: 8px;  /* adds some spacing so scrollbar doesn’t overlap text */
+}
+
+/* 1) Let the whole page breathe on big screens */
+.container {
+  /* replace your current max-width with this */
+  max-width: clamp(1200px, 92vw, 1800px);
+}
+
+/* 2) Widen the 3-column results row in the Bible Search layout */
+#bible-search .row.cols-3 {
+  /* wider columns with a sensible minimum so they don't get cramped */
+  grid-template-columns: repeat(3, minmax(420px, 1fr));
+  grid-gap: 28px; /* a bit more space between cards */
+}
+
+/* 3) Large-display polish */
+@media (min-width: 1600px) {
+  .title { font-size: 1.35rem; }
+  .subtitle { font-size: 1rem; }
+  .section-heading { font-size: 1.05rem; }
+
+  .verse { font-size: 1.05rem; line-height: 1.85; }
+
+  /* allow a taller scroll area on big screens */
+  #kougo-search-results,
+  #cunp-search-results,
+  #niv-search-results {
+    max-height: 720px;
+  }
+}
+
+@media (min-width: 2000px) {
+  /* optionally widen even further on ultra-wide displays */
+  .container { max-width: 2000px; }
+
+  #bible-search .row.cols-3 {
+    grid-template-columns: repeat(3, minmax(500px, 1fr));
+    grid-gap: 36px;
+  }
+
+  .verse { font-size: 1.15rem; line-height: 1.95; }
+}
+
+
+/* 1) Let the whole page breathe on big screens */
+.container {
+  max-width: clamp(1200px, 92vw, 1800px);
+}
+
+/* 2) Widen the 3-column results row in the Bible Search layout */
+#bible-search .row.cols-3 {
+  grid-template-columns: repeat(3, minmax(420px, 1fr));
+  grid-gap: 28px;
+}
+
+/* 3) Large-display polish */
+@media (min-width: 1600px) {
+  .title { font-size: 1.35rem; }
+  .subtitle { font-size: 1rem; }
+  .section-heading { font-size: 1.05rem; }
+
+  .verse { font-size: 1.05rem; line-height: 1.85; }
+
+  #kougo-search-results,
+  #cunp-search-results,
+  #niv-search-results {
+    max-height: 720px;
+  }
+}
+
+@media (min-width: 2000px) {
+  .container { max-width: 2000px; }
+
+  #bible-search .row.cols-3 {
+    grid-template-columns: repeat(3, minmax(500px, 1fr));
+    grid-gap: 36px;
+  }
+
+  .verse { font-size: 1.15rem; line-height: 1.95; }
+}
+
+
+/* ========= Responsive Bible results grid ========= */
+
+/* Default / desktop (already wide) */
+#bible-search .row.cols-3 {
+  grid-template-columns: repeat(3, minmax(420px, 1fr));
+  grid-gap: 28px;
+}
+
+/* Large desktop / TVs */
+@media (min-width: 1600px) {
+  #bible-search .row.cols-3 {
+    grid-template-columns: repeat(3, minmax(500px, 1fr));
+    grid-gap: 36px;
+  }
+
+  /* bigger verse text for distance viewing */
+  #kougo-search-results,
+  #cunp-search-results,
+  #niv-search-results {
+    max-height: 720px;
+  }
+  .verse { font-size: 1.05rem; line-height: 1.85; }
+}
+
+/* Laptop / large tablet — 2 columns */
+@media (max-width: 1199px) {
+  #bible-search .row.cols-3 {
+    grid-template-columns: repeat(2, minmax(320px, 1fr));
+    grid-gap: 22px;
+  }
+
+  /* keep scroll areas usable on shorter screens */
+  #kougo-search-results,
+  #cunp-search-results,
+  #niv-search-results {
+    max-height: 520px;
+  }
+}
+
+/* Tablet / big phones — 1 column */
+@media (max-width: 780px) {
+  #bible-search .row.cols-3 {
+    grid-template-columns: 1fr;
+    grid-gap: 18px;
+  }
+
+  /* tighten spacing and font a touch for small screens */
+  .verse       { font-size: 0.98rem; line-height: 1.65; }
+  .verse-number{ font-size: 0.68em; }
+
+  #kougo-search-results,
+  #cunp-search-results,
+  #niv-search-results {
+    max-height: 420px;        /* shorter viewport */
+    padding-right: 6px;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 480px) {
+  .container { padding: 16px; }
+  .card      { padding: 16px; }
+  .title     { font-size: 1.1rem; }
+  .subtitle  { font-size: 0.95rem; }
+
+  .verse       { font-size: 0.95rem; line-height: 1.6; }
+  .verse-number{ font-size: 0.65em; }
+}
+
+/* Smaller Service Type card */
+.small-service-type {
+  max-width: 160px;   /* keeps it compact */
+  padding: 12px;      /* reduce padding */
+}
+
+.placeholder.tiny {
+  min-height: 40px;   /* much smaller than .short */
+}

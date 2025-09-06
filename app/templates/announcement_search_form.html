@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Announcement Search Form{% endblock title %}
+{% block content %}
+<div class="form-wrap">
+  <form action="" method="post" novalidate>
+    <p>請貼上從「發佈到網路」取得的 Google 簡報嵌入連結，然後按下更新以套用到公告畫面。</p>
+
+    {{ form.hidden_tag() }}
+
+    <label for="{{ form.google_slide_url.id }}">{{ form.google_slide_url.label.text }}</label>
+    {{ form.google_slide_url }}
+
+    {% for error in form.google_slide_url.errors %}
+      <span class="error">[{{ error }}]</span>
+    {% endfor %}
+
+    <div class="form-actions">
+      {{ form.submit }}
+    </div>
+  </form>
+</div>
+{% endblock %}

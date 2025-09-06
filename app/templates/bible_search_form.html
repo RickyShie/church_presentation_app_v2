@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}Bible Search Form{% endblock %}
+{% block content %}
+<div class="form-grid">
+
+  <form action="" method="post" novalidate>
+    <h2>聖經經節查詢</h2>
+    {{ form.hidden_tag() }}
+    <h3>{{ form.book_name.label }}</h3>
+    <p>
+        {{ form.book_name }}
+        {% for error in form.book_name.errors %}
+         <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <h3>{{ form.chapter.label }}</h3>
+    <p>
+        {{ form.chapter }}
+        {% for error in form.chapter.errors %}
+         <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <h3>{{ form.start_verse.label }}</h3>
+    <p>
+        {{ form.start_verse }}
+        {% for error in form.start_verse.errors %}
+         <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <h3>{{ form.end_verse.label }}</h3>
+    <p>
+        {{ form.end_verse }}
+        {% for error in form.end_verse.errors %}
+         <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+      <p id="translation-check-boxes">
+          {% for subfield in form.translations %}
+      <div class="form-check">
+          {{ subfield(class="form-check-input") }}
+          {{ subfield.label(class="form-check-label") }}
+      </div>
+      {% endfor %}
+      {% for error in form.translations.errors %}
+      <span class="text-danger">{{ error }}</span>
+      {% endfor %}
+      </p>
+    {{ form.submit(class="btn btn-primary") }}
+</form>
+  <form action="" method="post" novalidate>
+    <h2>設定講道題目 & 讚美詩</h2>
+    {{ sermon_form.hidden_tag() }}
+    <h3>{{ sermon_form.service_type.label }}</h3>
+    <p>
+        {{ sermon_form.service_type }}
+    </p>
+    <h3>{{ sermon_form.jp_sermon_topic.label }}</h3>
+    <p>
+        {{ sermon_form.jp_sermon_topic }}
+    </p>
+    <h3>{{ sermon_form.cn_sermon_topic.label }}</h3>
+    <p>
+        {{ sermon_form.cn_sermon_topic }}
+    </p>
+    <h3>{{ sermon_form.speaker_name.label }}</h3>
+    <p>
+        {{ sermon_form.speaker_name }}
+    </p>
+    <h3>{{ sermon_form.interpreter_name.label }}</h3>
+    <p>
+        {{ sermon_form.interpreter_name }}
+    </p>
+    <h3>{{ sermon_form.opening_hymn.label }}</h3>
+    <p>
+        {{ sermon_form.opening_hymn }}
+    </p>
+    <h3>{{ sermon_form.closing_hymn.label }}</h3>
+    <p>
+        {{ sermon_form.closing_hymn }}
+    </p>
+    <h3>{{ sermon_form.pianist_name.label }}</h3>
+    <p>
+        {{ sermon_form.pianist_name }}
+    </p>
+    {{ sermon_form.submit(class="btn btn-primary") }}
+</form>
+</div>
+{% endblock %}

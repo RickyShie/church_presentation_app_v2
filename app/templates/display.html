@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Display</title>
+  <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/display_panel.css') }}">
+  <style>
+    /* small touch for the button */
+    .fs-btn {
+      appearance: none;
+      border: 1px solid #d0d7de;
+      background: #fff;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .fs-btn:hover { background: #f6f8fa; }
+  </style>
+
+  <!-- Socket.IO client (served by Flask-SocketIO at /socket.io/socket.io.js) -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
+          integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+  <script defer src="{{ url_for('static', filename='js/display-panel-client.js')}}"></script>
+</head>
+<body>
+  <header class="appbar">
+    <div class="container" style="display:flex; align-items:center; justify-content:space-between; gap:16px;">
+      <div class="brand">Display</div>
+
+      <div style="display:flex; align-items:center; gap:12px;">
+        <div class="pill" id="current-pill">Current: bible-search</div>
+        <!-- Fullscreen button -->
+        <button id="fullscreen-btn" class="fs-btn" type="button" aria-pressed="false" title="Toggle fullscreen (F)">
+          Enter Fullscreen
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- ===================== 1) Bible Search Layout ===================== -->
+    <section id="bible-search" class="layout active" aria-labelledby="bibleHeading">
+      <div class="card">
+        <div class="row cols-2">
+          <!-- LEFT SIDE: Service Type + Sermon Titles -->
+          <div>
+            <!-- Service Type card -->
+            <div class="card muted small-service-type">
+              <div id="service-type" class="section-heading">Service Type:</div>
+            </div>
+
+            <!-- Sermon Titles -->
+            <h2 id="jp-sermon-topic" class="title">Japanese Sermon Topic</h2>
+            <h2 id="cn-sermon-topic" class="title">Chinese Sermon Topic</h2>
+          </div>
+
+          <!-- RIGHT SIDE: Speaker / Interpreter / Hymns / Pianist -->
+          <div>
+            <div class="row cols-2" style="align-items: start;">
+              <div class="card muted">
+                <div id="speaker-name" class="section-heading">Speaker Name:</div>
+              </div>
+              <div class="card muted">
+                <div id="interpreter-name" class="section-heading">Interpreter Name:</div>
+              </div>
+            </div>
+            <div class="row cols-2" style="align-items: start;">
+              <div class="card muted" style="margin-top:16px;">
+                <div id="hymns" class="section-heading">Hymns:</div>
+              </div>
+              <div class="card muted" style="margin-top:16px;">
+                <div id="pianist-name" class="section-heading">Pianist Name:</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row cols-3" style="margin-top:20px;">
+        <div class="card">
+          <div class="section-heading">KOUGO Bible Verses</div>
+          <div id="kougo-search-results"></div>
+        </div>
+        <div class="card">
+          <div class="section-heading">CUNP Bible Verses</div>
+          <div id="cunp-search-results"></div>
+        </div>
+        <div class="card">
+          <div class="section-heading">NIV Bible Verses</div>
+          <div id="niv-search-results"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 2) Hymn Search Layout ===================== -->
+    <section id="hymn-search" class="layout" aria-labelledby="hymnHeading">
+      <div class="card">
+        <h2 id="hymnHeading" class="title">Japanese Hymn Name</h2>
+        <p class="subtitle">Chinese Hymn Name</p>
+      </div>
+
+      <div class="card" style="margin-top:20px;">
+        <div class="section-heading">Japanese Lyrics</div>
+        <div class="placeholder mid"></div>
+      </div>
+
+      <div class="card" style="margin-top:20px;">
+        <div class="section-heading">Japanese Chorus</div>
+        <div class="placeholder short"></div>
+      </div>
+    </section>
+
+    <!-- ===================== 3) Announcements Layout ===================== -->
+    <section id="display-announcement" class="layout" aria-labelledby="announceHeading">
+      <h2 id="announceHeading" class="title">Announcements</h2>
+
+<!--      <div class="row">-->
+<!--        <div class="card"><div class="placeholder short"></div></div>-->
+<!--        <div class="card"><div class="placeholder short"></div></div>-->
+<!--        <div class="card"><div class="placeholder short"></div></div>-->
+<!--        <div class="card"><div class="placeholder short"></div></div>-->
+<!--        <div class="card"><div class="placeholder short"></div></div>-->
+<!--      </div>-->
+      <iframe id="google-slides" src="https://docs.google.com/presentation/d/e/2PACX-1vSj5HdJm4bcTVOiVtml5D374NU90JC3BsvVzGGrP8eEFWJRZFWimDLPAbd5TIYURrqpN53YcBlX8xGM/pubembed?start=false&loop=false&delayms=3000" frameborder="0" width="1440" height="839" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+    </section>
+  </main>
+
+  <!-- Fullscreen toggle logic -->
+  <script>
+    (function () {
+      const btn = document.getElementById('fullscreen-btn');
+
+      function inFullscreen() {
+        return document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
+      }
+
+      function updateButton() {
+        const on = !!inFullscreen();
+        btn.textContent = on ? 'Exit Fullscreen' : 'Enter Fullscreen';
+        btn.setAttribute('aria-pressed', String(on));
+      }
+
+      async function enterFullscreen() {
+        const el = document.documentElement; // whole page
+        if (el.requestFullscreen) await el.requestFullscreen();
+        else if (el.webkitRequestFullscreen) await el.webkitRequestFullscreen(); // Safari
+        else if (el.msRequestFullscreen) await el.msRequestFullscreen();
+      }
+
+      async function exitFullscreen() {
+        if (document.exitFullscreen) await document.exitFullscreen();
+        else if (document.webkitExitFullscreen) await document.webkitExitFullscreen(); // Safari
+        else if (document.msExitFullscreen) await document.msExitFullscreen();
+      }
+
+      btn.addEventListener('click', async () => {
+        try {
+          if (inFullscreen()) await exitFullscreen();
+          else await enterFullscreen();
+        } catch (e) {
+          console.error('Fullscreen error:', e);
+        } finally {
+          updateButton();
+        }
+      });
+
+      // Keep label in sync when user presses ESC or OS exits fullscreen
+      document.addEventListener('fullscreenchange', updateButton);
+      document.addEventListener('webkitfullscreenchange', updateButton);
+      document.addEventListener('msfullscreenchange', updateButton);
+
+      // Keyboard shortcut: 'f' toggles fullscreen
+      document.addEventListener('keydown', (e) => {
+        if (e.key.toLowerCase() === 'f' && !e.repeat) btn.click();
+      });
+
+      updateButton();
+    })();
+  </script>
+</body>
+</html>
