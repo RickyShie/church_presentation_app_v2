@@ -1,6 +1,6 @@
 # fly.toml app configuration file
 app = 'church-presentation-app-v2'
-primary_region = 'nrt'
+primary_region = 'hkg'  # Hong Kong - try this first
 
 [build]
 
